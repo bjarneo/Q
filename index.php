@@ -8,8 +8,8 @@ require('framework/Q.php');
 
 // Create new instance of Q
 $app = new Q(array(
-    'mode' => 'developement',
-    'view_path' => './app/View/'
+    'mode' => 'developement',       // 'production' for no error messages
+    'view_path' => './app/View/'    // Set view folder.
 ));
 
 // Add your route. use($app) if you need to add the object to the anonymous function
