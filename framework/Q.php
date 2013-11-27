@@ -60,6 +60,7 @@ class Q
 
     /**
      * Create our route
+     * Need to create a better route so we can create a 404 page. Now it checks every path untill path == request uri
      * @param $path
      * @param $callback
      * @return bool
@@ -75,12 +76,10 @@ class Q
             return false;
         }
 
-        if($requri === $path) {
-            call_user_func_array($callback, $_segment);
-        } elseif($requri === $path && $path === '/') {
+        if($requri === $path && $path === '/') {
             call_user_func($callback);
-        } else {
-            // return 404
+        } elseif($requri === $path) {
+            call_user_func_array($callback, $_segment);
         }
     }
 
