@@ -34,4 +34,24 @@ $app->route('/', function () use($app) {
     $app->render('footer.php');
 });
 
+//Ex domain.com/post/param1/param2/param3 (see function parameters)
+$app->route('/language', function ($id) {
+    $res = array();
+    switch($id) {
+        case 1:
+            $res[] = array('language' => 'PHP');
+            break;
+        case 2:
+            $res[] = array('language' => 'JavaScript');
+            break;
+        case 3:
+            $res[] = array('language' => 'C');
+            break;
+        default:
+            $res[] = array('error' => 'no language found');
+    }
+    echo json_encode($res);
+    header('Content-Type: application/json');
+});
+
 ?>

@@ -66,20 +66,22 @@ class Q
      */
     public function route($path, $callback)
     {
-        if(isset($_SERVER['PATH_INFO']) && $path !== $_SERVER['PATH_INFO']) {
+        $requri = $_SERVER['REQUEST_URI'];
+        $pathinfo = $_SERVER['PATH_INFO'];
+
+        if(isset($pathinfo) && $path !== $pathinfo) {
             return false;
         }
+        // Create path
+        $_segment = array_slice(explode('/', $requri), 2);
+        $requri = explode('/', $requri);
+        $requri = '/' . $requri[1];
 
-        if($_SERVER['PATH_INFO'] === $path || $_SERVER['REQUEST_URI'] === $path) {
-            call_user_func($callback);
-        } elseif($_SERVER['REQUEST_URI'] === $path && $path === '/') {
+        if($pathinfo === $path || $requri === $path) {
+            call_user_func_array($callback, $_segment);
+        } elseif($requri === $path && $path === '/') {
             call_user_func($callback);
         }
-        /*
-        if(strpos($path, ':')) {
-
-        }
-        */
     }
 
     /**
