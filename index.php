@@ -54,4 +54,5 @@ $app->route('/language', function ($id) {
     header('Content-Type: application/json');
 });
 
+$app->run();
 ?>

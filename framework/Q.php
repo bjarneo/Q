@@ -45,6 +45,18 @@ class Q
     protected $mode;
 
     /**
+     * Cache paths
+     * @array $paths
+     */
+    protected $paths;
+
+    /**
+     * Cache callbacks
+     * @array callbacks
+     */
+    protected $callbacks;
+
+    /**
      * Constructor
      * Set default config
      * @param config
@@ -59,12 +71,16 @@ class Q
     }
 
     /**
-     * Create our route
-     * Need to create a better route so we can create a 404 page. Now it checks every path untill path == request uri
-     * @param $path
-     * @param $callback
-     * @return bool
+     * Route
+     *
      */
+    public function route($path, $callback)
+    {
+        $this->paths[] = $path;
+        $this->callbacks[] = $callback;
+    }
+
+    /*
     public function route($path, $callback)
     {
         $requri = $_SERVER['REQUEST_URI'];
@@ -82,6 +98,25 @@ class Q
             call_user_func_array($callback, $_segment);
         }
     }
+    */
+
+    /**
+     * Run correct URI
+     */
+    public function run()
+    {
+        $requri = $_SERVER['REQUEST_URI'];
+        $req = explode('/', $requri);
+        $requri = ($req[1] === 'index.php') ? '/' . $req[2] : '/' . $req[1];
+        $key = array_search($requri, $this->paths);
+        if(is_numeric($key)) {
+            $_segment = array_slice($req, ($req[1] === 'index.php') ? 3 : 2);
+            call_user_func_array($this->callbacks[$key], $_segment);
+        } else {
+            $this->render('404.php');
+            header("HTTP/1.0 404 Not Found");
+        }
+    }
 
     /**
      * Render template
@@ -94,7 +129,10 @@ class Q
         echo $view->view();
     }
 
-    private function error()
+    /**
+     * Error management
+     */
+    protected function error()
     {
         switch(strtolower($this->mode)) {
             case 'developement':
