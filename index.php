@@ -15,7 +15,8 @@ $app = new Q(array(
 $app->route('/', function () use($app) {
     $data = array(
         'hello' => 'Hi and welcome to Q PHP framework.',
-        'lead' => 'Use this framework as you wish. Need Twitter Bootstrap? Already implemented!'
+        'lead' => 'Use this framework as you wish. Need Twitter Bootstrap? Already implemented! <br />
+        <a href="https://github.com/bjarneo/Q" target="_blank">Fork Q framework at github!</a>'
     );
     $app->render('header.php');
     $app->render('content.php', $data);
