@@ -64,7 +64,7 @@ class Q
     public function __construct($config = false)
     {
         $this->templatePath = ($config['view_path']) ? $config['view_path'] : './app/View/';
-        $this->mode = ($config['mode']) ? $config['mode'] : 'developement';
+        $this->mode = ($config['mode']) ? $config['mode'] : 'default';
 
         // Run error management
         $this->error();
@@ -101,17 +101,32 @@ class Q
     */
 
     /**
-     * Run correct URI
+     * Map URI
+     * @return array|bool
      */
-    public function run()
+    protected function map()
     {
+        $userFuncProperties = array();
         $requri = $_SERVER['REQUEST_URI'];
         $req = explode('/', $requri);
         $requri = ($req[1] === 'index.php') ? '/' . $req[2] : '/' . $req[1];
-        $key = array_search($requri, $this->paths);
-        if(is_numeric($key)) {
-            $_segment = array_slice($req, ($req[1] === 'index.php') ? 3 : 2);
-            call_user_func_array($this->callbacks[$key], $_segment);
+        $userFuncProperties['key'] = array_search($requri, $this->paths);
+        $userFuncProperties['segment'] = array_slice($req, ($req[1] === 'index.php') ? 3 : 2);
+        if(isset($userFuncProperties['key'])) {
+            return $userFuncProperties;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Run app
+     */
+    public function run()
+    {
+        $map = $this->map();
+        if(isset($map['key']) && is_numeric($map['key'])) {
+            call_user_func_array($this->callbacks[$map['key']], $map['segment']);
         } else {
             $this->render('404.php');
             header("HTTP/1.0 404 Not Found");
@@ -135,7 +150,7 @@ class Q
     protected function error()
     {
         switch(strtolower($this->mode)) {
-            case 'developement':
+            case 'development':
                 error_reporting(E_ALL);
                 break;
             case 'production':

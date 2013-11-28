@@ -8,15 +8,31 @@ require('framework/Q.php');
 
 // Create new instance of Q
 $app = new Q(array(
-    'mode' => 'developement',       // 'production' for no error messages
+    'mode' => 'production',         // 'production' for no error messages
     'view_path' => './app/View/'    // Set view folder.
 ));
 
+$app->route('/', function () use($app) {
+    $data = array(
+        'hello' => 'Hi and welcome to Q PHP framework.',
+        'lead' => 'Use this framework as you wish. Need Twitter Bootstrap? Already implemented!'
+    );
+    $app->render('header.php');
+    $app->render('content.php', $data);
+    $app->render('footer.php');
+});
+
 // Add your route. use($app) if you need to add the object to the anonymous function
-$app->route('/test', function () use($app) {
+$app->route('/code', function () use($app) {
     // Data we append to our view file.
     $data = array(
-        'hello' => 'Hello World'
+        'hello' => 'Hi, this is just a test a test page.',
+        'lead' => '<pre>
+                    // This is how you add a new url to your site<br />
+                    $app->route("/hello", function () {<br />
+                    &nbsp;&nbsp;&nbsp;echo "Hello World";<br />
+                    });<br />
+                   </pre>'
     );
 
     // render view files
@@ -25,16 +41,19 @@ $app->route('/test', function () use($app) {
     $app->render('footer.php');
 });
 
-$app->route('/', function () use($app) {
+$app->route('/about', function () use($app) {
     $data = array(
-        'hello' => 'This is front page of your view'
+        'hello' => 'About Bjarne Øverli',
+        'lead' => 'Coming...meanwhile checkout my <a href="http://www.codephun.com" target="_blank">blog</a> or <a href="//www.twitter.com/bjarneo_" target="_blank">twitter</a>!'
     );
+
+    // render view files
     $app->render('header.php');
     $app->render('content.php', $data);
     $app->render('footer.php');
 });
 
-//Ex domain.com/post/param1/param2/param3 (see function parameters)
+//Ex domain.com/language/1 (function($id) $id == 1)
 $app->route('/language', function ($id) {
     $res = array();
     switch($id) {
