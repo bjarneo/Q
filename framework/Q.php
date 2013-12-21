@@ -80,26 +80,6 @@ class Q
         $this->callbacks[] = $callback;
     }
 
-    /*
-    public function route($path, $callback)
-    {
-        $requri = $_SERVER['REQUEST_URI'];
-        $req = explode('/', $requri);
-        $_segment = array_slice($req, ($req[1] === 'index.php') ? 3 : 2);
-        $requri = ($req[1] === 'index.php') ? '/' . $req[2] : '/' . $req[1];
-
-        if(isset($requri) && $path !== $requri) {
-            return false;
-        }
-
-        if($requri === $path && $path === '/') {
-            call_user_func($callback);
-        } elseif($requri === $path) {
-            call_user_func_array($callback, $_segment);
-        }
-    }
-    */
-
     /**
      * Map URI
      * @return array|bool
@@ -107,16 +87,57 @@ class Q
     protected function map()
     {
         $userFuncProperties = array();
-        $requri = $_SERVER['REQUEST_URI'];
-        $req = explode('/', $requri);
-        $requri = ($req[1] === 'index.php') ? '/' . $req[2] : '/' . $req[1];
-        $userFuncProperties['key'] = array_search($requri, $this->paths);
-        $userFuncProperties['segment'] = array_slice($req, ($req[1] === 'index.php') ? 3 : 2);
+        $request = $this->requests();
+
+        $userFuncProperties = array(
+            'key' => array_search($request['path'], $this->paths),
+            'params' => (isset($request['params'])) ? $request['params'] : array()
+        );
+
         if(isset($userFuncProperties['key'])) {
             return $userFuncProperties;
         } else {
             return false;
         }
+    }
+
+    /**
+     * Filter request uri
+     * @return array
+     */
+    protected function requests()
+    {
+        $requests = array();
+        $output = array();
+
+        // Explode requests
+        $requests = explode('/', $_SERVER['REQUEST_URI']);
+        // Remove empty array elements and rearrange keys
+        $requests = array_values(
+            array_filter($requests)
+        );
+
+        // Add slash if empty
+        if(!$requests) {
+            $requests[0] = '/';
+        }
+
+        // Set path output (works with only one 'segment'. Example /code)
+        foreach($requests as $request) {
+            if($request !== 'index.php' && $request !== '/') {
+                $output['path'] = '/' . $request;
+                $output['params'] = array_values(
+                    array_diff($requests, array($request))
+                );
+                // break after we hit first path
+                break;
+            } else if($request === '/') {
+                $output['path'] = '/';
+                break;
+            }
+        }
+
+        return $output;
     }
 
     /**
@@ -126,7 +147,7 @@ class Q
     {
         $map = $this->map();
         if(isset($map['key']) && is_numeric($map['key'])) {
-            call_user_func_array($this->callbacks[$map['key']], $map['segment']);
+            call_user_func_array($this->callbacks[$map['key']], $map['params']);
         } else {
             $this->render('404.php');
             header("HTTP/1.0 404 Not Found");
@@ -146,6 +167,7 @@ class Q
 
     /**
      * Error management
+     * Todo: better error management. Create own class.
      */
     protected function error()
     {
@@ -159,6 +181,19 @@ class Q
             default:
                 error_reporting(E_ERROR | E_WARNING | E_PARSE);
         }
+    }
+
+    /**
+     * Todo: Create own logger class
+     * @param $str
+     * @param $array
+     */
+    public function log($str, $array)
+    {
+        echo '## ' . $str . ': ' . count($array) . ' ##<br />';
+        echo '<pre>';
+        print_r($array);
+        echo '</pre>';
     }
 }
 

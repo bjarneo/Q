@@ -8,13 +8,13 @@ require('framework/Q.php');
 
 // Create new instance of Q
 $app = new Q(array(
-    'mode' => 'production',         // 'production' for no error messages
+    'mode' => 'development',         // 'production' for no error messages
     'view_path' => './app/View/'    // Set view folder.
 ));
 
 $app->route('/', function () use($app) {
     $data = array(
-        'hello' => 'Hi and welcome to Q PHP framework.',
+        'hello' => 'Welcome to Q PHP framework.',
         'lead' => 'Use this framework as you wish. Need Twitter Bootstrap? Already implemented! <br />
         <a href="https://github.com/bjarneo/Q" target="_blank">Fork Q framework at github!</a>'
     );
@@ -27,7 +27,7 @@ $app->route('/', function () use($app) {
 $app->route('/code', function () use($app) {
     // Data we append to our view file.
     $data = array(
-        'hello' => 'Hi, this is just a test a test page.',
+        'hello' => 'Code example: ',
         'lead' => '<pre>
                     // This is how you add a new url to your site<br />
                     $app->route("/hello", function () {<br />
@@ -72,6 +72,13 @@ $app->route('/language', function ($id) {
     }
     echo json_encode($res);
     header('Content-Type: application/json');
+});
+
+// Param test. ex: domain.com/params/test1/test2/test3
+$app->route('/params', function ($param, $param2, $param3) {
+    printf("Param 1: %s <br />", $param);
+    printf("Param 2: %s <br />", $param2);
+    printf("Param 3: %s <br />", $param3);
 });
 
 $app->run();
