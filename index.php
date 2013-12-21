@@ -2,7 +2,6 @@
 /**
  * Example index.php
  */
-
 // Get Q
 require('framework/Q.php');
 
