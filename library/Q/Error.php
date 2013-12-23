@@ -6,7 +6,7 @@
  * @copyright   2013 Bjarne Øverli
  * @link        https://github.com/bjarneo/Q
  * @version     0.1.0
- * @package     Error
+ * @package     Q
  *
  * MIT LICENSE
  *
