@@ -59,12 +59,17 @@ class Error
      */
     public function getError()
     {
+        // Add error logs
+        ini_set('log_errors', 1);
+
         switch(strtolower($this->level)) {
             case 'development':
+                ini_set('display_errors', 1);
                 error_reporting(E_ALL);
                 break;
             case 'production':
-                error_reporting(0);
+                ini_set('display_errors', 0);
+                error_reporting(E_ALL);
                 break;
             default:
                 error_reporting(E_ERROR | E_WARNING | E_PARSE);
