@@ -3,10 +3,10 @@
  * Example index.php
  */
 // Get Q
-require('framework/Q.php');
+require('Q/Q.php');
 
 // Create new instance of Q
-$app = new Q(array(
+$app = new \Q\Q(array(
     'mode' => 'development',         // 'production' for no error messages
     'view_path' => './app/View/'    // Set view folder.
 ));

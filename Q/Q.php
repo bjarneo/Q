@@ -1,5 +1,4 @@
 <?php
-require_once('lib/View.php');
 /**
  * Q - a PHP5 Framework
  *
@@ -30,6 +29,8 @@ require_once('lib/View.php');
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+namespace Q;
+require_once('View/View.php');
 class Q
 {
     /**
@@ -125,7 +126,10 @@ class Q
         // Set path output (works with only one 'segment'. Example /code)
         foreach($requests as $request) {
             if($request !== 'index.php' && $request !== '/') {
+                // Set our path
                 $output['path'] = '/' . $request;
+
+                // Generate our params
                 $output['params'] = array_values(
                     array_diff($requests, array($request))
                 );
@@ -161,7 +165,7 @@ class Q
      */
     public function render($template, $data = array())
     {
-        $view = new View($this->templatePath . $template, $data);
+        $view = new \Q\View\View($this->templatePath . $template, $data);
         echo $view->view();
     }
 
