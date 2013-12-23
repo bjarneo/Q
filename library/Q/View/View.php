@@ -51,14 +51,13 @@ class View
      * @param $template
      * @param $data
      */
-    public function __construct($template, $data)
+    public function __construct($template, array $data)
     {
+        $this->_data = $data;
+
         try {
             if(file_exists($template)) {
                 $this->_template = $template;
-            }
-            if(isset($data)) {
-                $this->_data = $data;
             }
         } catch(Exception $e) {
             echo $e->getMessage();

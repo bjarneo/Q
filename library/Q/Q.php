@@ -61,7 +61,7 @@ class Q
      * Set default config
      * @param config
      */
-    public function __construct($config = false)
+    public function __construct(array $config = array())
     {
         $this->templatePath = ($config['view_path']) ? $config['view_path'] : './app/View/';
         $this->mode = ($config['mode']) ? $config['mode'] : 'default';
@@ -162,7 +162,7 @@ class Q
      * @param $template
      * @param bool $data
      */
-    public function render($template, $data = array())
+    public function render($template, array $data = array())
     {
         $view = new \Q\View\View($this->templatePath . $template, $data);
         echo $view->view();
@@ -184,19 +184,6 @@ class Q
             default:
                 error_reporting(E_ERROR | E_WARNING | E_PARSE);
         }
-    }
-
-    /**
-     * Todo: Create own logger class
-     * @param $str
-     * @param $array
-     */
-    public function log($str, $array)
-    {
-        echo '## ' . $str . ': ' . count($array) . ' ##<br />';
-        echo '<pre>';
-        print_r($array);
-        echo '</pre>';
     }
 }
 
