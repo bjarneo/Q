@@ -1,0 +1,23 @@
+{
+    "name": "Q/Q",
+    "type": "framework",
+    "description": "Micro PHP Framework for small applications",
+    "keywords": [ "light application", "micro framework" ],
+    "homepage": "http://q.codephun.com/",
+    "license": "MIT",
+    "authors": [{
+        "name": "Bjarne Øverli",
+        "email": "bjarne.oeverli@gmail.com",
+        "role": "Creator",
+        "homepage": "http://www.codephun.com"
+    }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Q\\": "library/"
+        }
+    }
+}

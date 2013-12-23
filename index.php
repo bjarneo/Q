@@ -2,8 +2,8 @@
 /**
  * Example index.php
  */
-// Get Q
-require('Q/Q.php');
+// You must use Composer's autoloader for this project.
+require 'vendor/autoload.php';
 
 // Create new instance of Q
 $app = new \Q\Q(array(

@@ -30,7 +30,6 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 namespace Q;
-require_once('View/View.php');
 class Q
 {
     /**
