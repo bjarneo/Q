@@ -57,6 +57,12 @@ class Q
     protected $callbacks;
 
     /**
+     * Set Error class
+     * @object error
+     */
+    protected $error;
+
+    /**
      * Constructor
      * Set default config
      * @param config
@@ -67,7 +73,8 @@ class Q
         $this->mode = ($config['mode']) ? $config['mode'] : 'default';
 
         // Run error management
-        $this->error();
+        $this->error = new \Q\Error();
+        $this->error->setLevel($this->mode)->getError();
     }
 
     /**
@@ -160,30 +167,12 @@ class Q
     /**
      * Render template
      * @param $template
-     * @param bool $data
+     * @param array $data
      */
     public function render($template, array $data = array())
     {
-        $view = new \Q\View\View($this->templatePath . $template, $data);
+        $view = new \Q\View($this->templatePath . $template, $data);
         echo $view->view();
-    }
-
-    /**
-     * Error management
-     * Todo: better error management. Create own class.
-     */
-    protected function error()
-    {
-        switch(strtolower($this->mode)) {
-            case 'development':
-                error_reporting(E_ALL);
-                break;
-            case 'production':
-                error_reporting(0);
-                break;
-            default:
-                error_reporting(E_ERROR | E_WARNING | E_PARSE);
-        }
     }
 }
 

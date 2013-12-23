@@ -10,8 +10,7 @@
         "email": "bjarne.oeverli@gmail.com",
         "role": "Creator",
         "homepage": "http://www.codephun.com"
-    }
-    ],
+    }],
     "require": {
         "php": ">=5.4.0"
     },
