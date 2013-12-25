@@ -31,6 +31,7 @@
  */
 
 namespace Q;
+
 class Error
 {
     /**

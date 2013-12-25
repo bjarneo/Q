@@ -31,44 +31,58 @@
  */
 
 namespace Q;
+
 class View
 {
     /**
      * Template to render
      * @var
      */
-    private $_template;
+    protected $template;
 
     /**
      * Data
      * @var
      */
-    private $_data;
+    protected $data;
 
+    public function __construct() { }
 
     /**
-     * Set our template
+     * Set template
      * @param $template
-     * @param $data
+     * @return $this
      */
-    public function __construct($template, array $data)
+    public function setTemplate($template)
     {
-        $this->_data = $data;
-
         try {
             if(file_exists($template)) {
-                $this->_template = $template;
+                $this->template = $template;
             }
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+
+        return $this;
+    }
+
+    /**
+     * Set data
+     * @param array $data
+     * @return $this
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
     }
 
     /**
      * Render the view
      * @return string
      */
-    public function view()
+    public function renderView()
     {
         $html = false;
 

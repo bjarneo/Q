@@ -29,7 +29,11 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Q;
+use \Q\Error;
+use \Q\View;
+
 class Q
 {
     /**
@@ -63,6 +67,12 @@ class Q
     protected $error;
 
     /**
+     * Set View class
+     * @object
+     */
+    protected $view;
+
+    /**
      * Constructor
      * Set default config
      * @param config
@@ -73,8 +83,11 @@ class Q
         $this->mode = ($config['mode']) ? $config['mode'] : 'default';
 
         // Run error management
-        $this->error = new \Q\Error();
+        $this->error = new Error();
         $this->error->setLevel($this->mode)->getError();
+
+        // Set view class
+        $this->view = new View();
     }
 
     /**
@@ -171,8 +184,7 @@ class Q
      */
     public function render($template, array $data = array())
     {
-        $view = new \Q\View($this->templatePath . $template, $data);
-        echo $view->view();
+        echo $this->view->setTemplate($this->templatePath . $template)->setData($data)->renderView();
     }
 }
 
