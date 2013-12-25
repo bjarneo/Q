@@ -2,8 +2,6 @@ Q PHP Framework
 =
 <a href="http://q.codephun.com/" target="_blank">http://q.codephun.com/</a>
 
-<br />
-
 This is not a RESTful framework. This framework is ment for small applications that only needs few pages.
 Requires: <a href="http://getcomposer.org">Composer</a>.
 
@@ -30,7 +28,7 @@ $app = new \Q\Q(array(
 
 ### Append routes (paths)
 ```php
-$app->route('/code', function() {
+$app->route('/', function() {
     echo 'Hello Q';
 });
 ```
@@ -44,7 +42,7 @@ $app->route('/404', function() use ($app) {
 
 ### Add data to templates
 ```php
-$app->route('/code', function() {
+$app->route('/hello', function() use($app) {
     $data = array(
         'greeting' => 'Hello Q!'
     );
