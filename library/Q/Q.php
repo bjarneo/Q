@@ -62,15 +62,21 @@ class Q
 
     /**
      * Set Error class
-     * @object error
+     * @object Error
      */
     protected $error;
 
     /**
      * Set View class
-     * @object
+     * @object View
      */
     protected $view;
+
+    /**
+     * Set Requests class
+     * @object Requests
+     */
+    protected $requests;
 
     /**
      * Constructor
@@ -88,6 +94,16 @@ class Q
 
         // Set view class
         $this->view = new View();
+
+        // Set request class
+        $this->requests = new Requests();
+    }
+
+    public function __destruct()
+    {
+        unset($this->error);
+        unset($this->view);
+        unset($this->requests);
     }
 
     /**
@@ -106,61 +122,19 @@ class Q
      */
     protected function map()
     {
-        $userFuncProperties = array();
-        $request = $this->requests();
+        $requestData = array();
+        $request = $this->requests->setRequestUri($_SERVER['REQUEST_URI'])->getRequests();
 
-        $userFuncProperties = array(
+        $requestData = array(
             'key' => array_search($request['path'], $this->paths),
             'params' => (isset($request['params'])) ? $request['params'] : array()
         );
 
-        if(isset($userFuncProperties['key'])) {
-            return $userFuncProperties;
+        if(isset($requestData['key'])) {
+            return $requestData;
         } else {
             return false;
         }
-    }
-
-    /**
-     * Filter request uri
-     * @return array
-     */
-    protected function requests()
-    {
-        $requests = array();
-        $output = array();
-
-        // Explode requests
-        $requests = explode('/', $_SERVER['REQUEST_URI']);
-        // Remove empty array elements and rearrange keys
-        $requests = array_values(
-            array_filter($requests)
-        );
-
-        // Add slash if empty
-        if(!$requests) {
-            $requests[0] = '/';
-        }
-
-        // Set path output (works with only one 'segment'. Example /code)
-        foreach($requests as $request) {
-            if($request !== 'index.php' && $request !== '/') {
-                // Set our path
-                $output['path'] = '/' . $request;
-
-                // Generate our params
-                $output['params'] = array_values(
-                    array_diff($requests, array($request))
-                );
-                // break after we hit first path
-                break;
-            } else if($request === '/') {
-                $output['path'] = '/';
-                break;
-            }
-        }
-
-        return $output;
     }
 
     /**

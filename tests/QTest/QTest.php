@@ -42,6 +42,8 @@ class QTest extends \PHPUnit_Framework_TestCase
             'mode' => 'development',         // 'production' for no error messages
             'view_path' => './app/View/'    // Set view folder.
         ));
+
+        $_SERVER['REQUEST_URI'] = '/index.php/code';
     }
 
     public function testHasPropertyMode()
