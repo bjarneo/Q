@@ -161,7 +161,7 @@ class Q
      */
     public function render($template, array $data = array())
     {
-        $this->view->setTemplate($this->templatePath . $template)->setData($data)->render();
+        echo $this->view->setTemplate($this->templatePath . $template)->setData($data)->render();
     }
 }
 

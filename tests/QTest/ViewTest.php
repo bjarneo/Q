@@ -30,89 +30,44 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Q;
+namespace QTest;
 
-class View
+use \Q\View;
+
+class ViewTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Template to render
-     * @var
-     */
-    protected $template;
-
-    /**
-     * Data
-     * @var
-     */
-    protected $data;
-
-    /**
-     * Set template
-     * @param $template
-     * @return $this
-     */
-    public function setTemplate($template)
+    public function setUp()
     {
-        try {
-            if(file_exists($template)) {
-                $this->template = $template;
-            }
-        } catch(Exception $e) {
-            echo $e->getMessage();
+        $this->view = new View();
+    }
+
+    public function testTemplate()
+    {
+        $this->assertFileExists((string)$this->view->setTemplate('../app/View/404.php')->getTemplate());
+    }
+
+    public function testData()
+    {
+        $data = array(
+            'var1' => 'value1',
+            'var2' => 'value2'
+        );
+        $this->view->setData($data);
+
+        $this->assertArrayHasKey('var1', $this->view->getData());
+        $this->assertContains('value1', $this->view->getData()['var1']);
+    }
+
+    public function testRender()
+    {
+        $this->view->setTemplate('../app/View/404.php')->setData(array());
+        if($this->view->render()) {
+            $this->assertTrue(TRUE);
+        } else {
+            $this->assertTrue(FALSE);
         }
-
-        return $this;
-    }
-
-    /**
-     * Get template
-     * @return $template
-     */
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-
-    /**
-     * Set data
-     * @param array $data
-     * @return $this
-     */
-    public function setData(array $data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * Return data
-     * @return $data
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * Render the view
-     * @return string
-     */
-    public function render()
-    {
-        $html = false;
-
-        if(isset($this->data)) {
-            extract($this->data);
-        }
-
-        ob_start();
-        include($this->template);
-        $html = ob_get_contents();
-        ob_end_clean();
-
-        return $html;
     }
 }
+
 
 ?>
