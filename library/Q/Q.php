@@ -76,7 +76,7 @@ class Q
      * Set Requests class
      * @object Requests
      */
-    protected $requests;
+    protected $request;
 
     /**
      * Constructor
@@ -96,7 +96,7 @@ class Q
         $this->view = new View();
 
         // Set request class
-        $this->requests = new Requests();
+        $this->request = new Request();
     }
 
     /**
@@ -106,7 +106,7 @@ class Q
     {
         unset($this->error);
         unset($this->view);
-        unset($this->requests);
+        unset($this->request);
     }
 
     /**
@@ -126,7 +126,7 @@ class Q
     protected function map()
     {
         $requestData = array();
-        $request = $this->requests->setRequestUri($_SERVER['REQUEST_URI'])->getRequests();
+        $request = $this->request->setRequest($_SERVER['REQUEST_URI'])->getRequest();
 
         $requestData = array(
             'key' => array_search($request['path'], $this->paths),

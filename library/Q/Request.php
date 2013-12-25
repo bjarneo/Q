@@ -32,7 +32,7 @@
 
 namespace Q;
 
-class Requests
+class Request
 {
     protected $request;
 
@@ -41,7 +41,7 @@ class Requests
      * @param $request
      * @return $this
      */
-    public function setRequestUri($request)
+    public function setRequest($request)
     {
         $this->request = $request;
 
@@ -52,7 +52,7 @@ class Requests
      * Get Request URI
      * @return array
      */
-    public function getRequests()
+    public function getRequest()
     {
         $requests = array();
 
@@ -69,7 +69,7 @@ class Requests
             $requests[0] = '/';
         }
 
-        return $this->filterRequests($requests);
+        return $this->filterRequest($requests);
     }
 
     /**
@@ -77,7 +77,7 @@ class Requests
      * @param array $requests
      * @return array
      */
-    protected function filterRequests(array $requests = array())
+    protected function filterRequest(array $requests = array())
     {
         $output = array();
 
