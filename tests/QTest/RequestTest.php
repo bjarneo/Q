@@ -32,36 +32,29 @@
 
 namespace QTest;
 
-use \Q\Q;
+use \Q\Request;
 
-class QTest extends \PHPUnit_Framework_TestCase
+class RequestTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->Q = new Q(array(
-            'mode' => 'development',         // 'production' for no error messages
-            'view_path' => './app/View/'    // Set view folder.
-        ));
-
-        $_SERVER['REQUEST_URI'] = '/index.php/code';
+        $this->request = new Request();
+        $_SERVER['REQUEST_URI'] = '/index.php/code/1/2/3';
     }
 
-    public function testRoute()
+    public function testRequest()
     {
-        $this->Q->route('/test', function () { echo 'hello world1'; });
+        $this->request->setRequest($_SERVER['REQUEST_URI']);
 
-        // Check if paths has path
-        $this->assertContains('/test', \PHPUnit_Framework_Assert::readAttribute($this->Q, 'paths'));
+        // check if path exists and contains /code
+        $this->assertArrayHasKey('path', $this->request->getRequest());
+        $this->assertContains('/code', $this->request->getRequest()['path']);
 
-        // Check if callbacks has functions
-        $this->assertInternalType('array', \PHPUnit_Framework_Assert::readAttribute($this->Q, 'callbacks'));
-        foreach(\PHPUnit_Framework_Assert::readAttribute($this->Q, 'callbacks') as $callback) {
-            if(is_callable($callback)) {
-                $this->assertTrue(TRUE);
-            } else {
-                $this->assertTrue(FALSE);
-            }
-        }
+        // check if params exists and contains params
+        $this->assertArrayHasKey('params', $this->request->getRequest());
+        $this->assertContains('1', $this->request->getRequest()['params']);
+        $this->assertContains('2', $this->request->getRequest()['params']);
+        $this->assertContains('3', $this->request->getRequest()['params']);
     }
 }
 
