@@ -15,6 +15,7 @@ $app = new \Q\Q(array(
     'view_path' => './app/View/'    // Set view folder.
 ));
 
+// Add your route. use($app) if you need to add the object to the anonymous function
 $app->route('/', function () use($app) {
     $data = array(
         'hello' => 'Welcome to Q PHP framework.',
@@ -26,7 +27,6 @@ $app->route('/', function () use($app) {
     $app->render('footer.php');
 });
 
-// Add your route. use($app) if you need to add the object to the anonymous function
 $app->route('/code', function () use($app) {
     // Data we append to our view file.
     $data = array(
