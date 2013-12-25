@@ -40,7 +40,7 @@ class Q
      * Template path
      * @var string
      */
-    public $templatePath;
+    protected $templatePath;
 
     /**
      * Developement / Production
