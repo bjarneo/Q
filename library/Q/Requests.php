@@ -36,8 +36,6 @@ class Requests
 {
     protected $request;
 
-    public function __construct() { }
-
     /**
      * Set request uri
      * @param $request

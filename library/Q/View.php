@@ -46,8 +46,6 @@ class View
      */
     protected $data;
 
-    public function __construct() { }
-
     /**
      * Set template
      * @param $template

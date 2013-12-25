@@ -99,6 +99,9 @@ class Q
         $this->requests = new Requests();
     }
 
+    /**
+     * Comment: Is this necessary?
+     */
     public function __destruct()
     {
         unset($this->error);
@@ -158,9 +161,7 @@ class Q
      */
     public function render($template, array $data = array())
     {
-        $this->view->setTemplate($this->templatePath . $template)
-                    ->setData($data)
-                    ->renderView();
+        $this->view->setTemplate($this->templatePath . $template)->setData($data)->renderView();
     }
 }
 

@@ -40,8 +40,6 @@ class Error
      */
     protected $level;
 
-    public function __construct() { }
-
     /**
      * Set error level
      * @param $level
