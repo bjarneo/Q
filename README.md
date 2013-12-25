@@ -33,6 +33,12 @@ $app->route('/', function() {
 });
 ```
 
+### Run application
+```php
+// After last route you've created you must run you application
+$app->run()
+```
+
 ### Render view
 ```php
 $app->route('/404', function() use ($app) {
@@ -52,7 +58,7 @@ $app->route('/hello', function() use($app) {
 });
 ```
 
-### How to use params
+### How to use parameters
 ```php
 // Add params as parameters in function
 $app->route('/path', function($name, $age) {
