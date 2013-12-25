@@ -86,12 +86,12 @@ class View
     {
         $html = false;
 
-        if(isset($this->_data)) {
-            extract($this->_data);
+        if(isset($this->data)) {
+            extract($this->data);
         }
 
         ob_start();
-        include($this->_template);
+        include($this->template);
         $html = ob_get_contents();
         ob_end_clean();
 
