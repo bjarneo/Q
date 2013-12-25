@@ -5,6 +5,10 @@
 // You must use Composer's autoloader for this project.
 require 'vendor/autoload.php';
 
+// Test your application with Ubench. Speed + Memory. Delete if not used.
+$bench = new Ubench;
+$bench->start();
+
 // Create new instance of Q
 $app = new \Q\Q(array(
     'mode' => 'development',         // 'production' for no error messages
@@ -79,6 +83,11 @@ $app->route('/params', function ($param, $param2, $param3) {
     printf("Param 2: %s <br />", $param2);
     printf("Param 3: %s <br />", $param3);
 });
-
+// Run app
 $app->run();
+
+// Ubench end. Delete if not used.
+$bench->end();
+printf("Time used: %s | Memory used: %s", $bench->getTime(), $bench->getMemoryUsage());
+
 ?>
