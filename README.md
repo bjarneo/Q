@@ -64,4 +64,7 @@ $app->route('/hello', function() use($app) {
 $app->route('/path', function($name, $age) {
     printf("My name is: %s. I'm %s years old.", $name, $age);
 });
+
+// Ex: domain.com/path/bjarneo/26
+// Ouput: My name is: bjarneo. I'm 26 years old.
 ```
