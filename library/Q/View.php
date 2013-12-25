@@ -80,7 +80,7 @@ class View
      * Render the view
      * @return string
      */
-    public function renderView()
+    public function render()
     {
         $html = false;
 
