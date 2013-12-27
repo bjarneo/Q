@@ -12,6 +12,9 @@ git clone https://github.com/bjarneo/Q.git
 
 // Open Q directory
 composer install
+
+// Or if you composer.phar file isn't placed in your bin directory (unix systems) use this command
+php composer.phar install
 ```
 
 ### Set up index.php file
@@ -41,8 +44,8 @@ $app->run()
 
 ### Render view
 ```php
-$app->route('/404', function() use ($app) {
-    $app->render('404.php');
+$app->route('/hello', function() use ($app) {
+    $app->render('template.php');
 });
 ```
 
