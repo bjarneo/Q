@@ -31,6 +31,7 @@
  */
 
 namespace Q;
+
 use \Q\Error;
 use \Q\View;
 
@@ -73,12 +74,6 @@ class Q
     protected $view;
 
     /**
-     * Set Requests class
-     * @object Requests
-     */
-    protected $request;
-
-    /**
      * Constructor
      * Set default config
      * @param config
@@ -90,28 +85,18 @@ class Q
 
         // Run error management
         $this->error = new Error();
-        $this->error->setLevel($this->mode)->getError();
+        $this->error
+            ->setLevel($this->mode)
+            ->getError();
 
         // Set view class
         $this->view = new View();
-
-        // Set request class
-        $this->request = new Request();
     }
 
     /**
-     * Comment: Is this necessary?
-     */
-    public function __destruct()
-    {
-        unset($this->error);
-        unset($this->view);
-        unset($this->request);
-    }
-
-    /**
-     * Route
-     *
+     * Set up route and callbacks
+     * @param $path
+     * @param $callback
      */
     public function route($path, $callback)
     {
@@ -121,19 +106,20 @@ class Q
 
     /**
      * Map URI
-     * @return array|bool
+     * @param  object $request \Q\Request
+     * @return array|bool return filtered request
      */
-    protected function map()
+    protected function map($request)
     {
         $requestData = array();
-        $request = $this->request->setRequest($_SERVER['REQUEST_URI'])->getRequest();
+        $request = $request->getRequest();
 
         $requestData = array(
             'key' => array_search($request['path'], $this->paths),
             'params' => (isset($request['params'])) ? $request['params'] : array()
         );
 
-        if(isset($requestData['key'])) {
+        if (isset($requestData['key'])) {
             return $requestData;
         } else {
             return false;
@@ -141,12 +127,14 @@ class Q
     }
 
     /**
-     * Run app
+     * Run application
      */
     public function run()
     {
-        $map = $this->map();
-        if(isset($map['key']) && is_numeric($map['key'])) {
+        // Map Requests and Paths
+        $map = $this->map(new Request($_SERVER['REQUEST_URI']));
+
+        if (isset($map['key']) && is_numeric($map['key'])) {
             call_user_func_array($this->callbacks[$map['key']], $map['params']);
         } else {
             $this->render('404.php');
@@ -161,7 +149,10 @@ class Q
      */
     public function render($template, array $data = array())
     {
-        echo $this->view->setTemplate($this->templatePath . $template)->setData($data)->render();
+        echo $this->view
+            ->setTemplate($this->templatePath . $template)
+            ->setData($data)
+            ->render();
     }
 }
 

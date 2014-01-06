@@ -42,7 +42,7 @@ class Error
 
     /**
      * Set error level
-     * @param $level
+     * @param string $level
      * @return $this
      */
     public function setLevel($level)

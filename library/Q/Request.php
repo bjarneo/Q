@@ -34,14 +34,13 @@ namespace Q;
 
 class Request
 {
-    protected $request;
-
     /**
-     * Set request uri
-     * @param $request
-     * @return $this
+     * Holds request class
+     * @var \Q\Request
      */
-    public function setRequest($request)
+    private $request;
+
+    public function __construct($request)
     {
         $this->request = $request;
 
@@ -56,9 +55,9 @@ class Request
     {
         $requests = array();
 
-
         // Explode requests
         $requests = explode('/', $this->request);
+
         // Remove empty array elements and rearrange keys
         $requests = array_values(
             array_filter($requests)
@@ -91,9 +90,11 @@ class Request
                 $output['params'] = array_values(
                     array_diff($requests, array($request))
                 );
+
                 // break after we hit first path
                 break;
             } else if($request === '/') {
+                // Set path /
                 $output['path'] = '/';
                 break;
             }

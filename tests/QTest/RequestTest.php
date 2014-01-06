@@ -38,14 +38,12 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->request = new Request();
         $_SERVER['REQUEST_URI'] = '/index.php/code/1/2/3';
+        $this->request = new Request($_SERVER['REQUEST_URI']);
     }
 
     public function testRequest()
     {
-        $this->request->setRequest($_SERVER['REQUEST_URI']);
-
         // check if path exists and contains /code
         $this->assertArrayHasKey('path', $this->request->getRequest());
         $this->assertContains('/code', $this->request->getRequest()['path']);
