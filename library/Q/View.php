@@ -96,17 +96,19 @@ class View
 
     /**
      * Render the view
-     * @return string
+     * @return string $html Html output
      */
     public function render()
     {
         $html = false;
 
+        // Extract template data
         if(isset($this->data)) {
             extract($this->data);
         }
 
-        ob_start();
+        // Start ouput buffering and compress it with ob_gzhandler
+        ob_start('ob_gzhandler');
         include($this->template);
         $html = ob_get_contents();
         ob_end_clean();
